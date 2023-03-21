@@ -6,6 +6,9 @@ export class Service {
         this.id = id; this.name = name; this.price = price
         // chamar os setters aqui
     }
+    getPrice(): number{
+        return this.price
+    }
     // criar os setter e getters
     toString(): string{
         return `{Id: ${this.id}, Name: ${this.name}, Price: ${this.price}}`
