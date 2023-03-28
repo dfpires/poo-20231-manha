@@ -10,7 +10,7 @@ export class Snake extends Animal {
     // herdamos toString(), mas ele não é suficiente
     // vamos anular o método toString() herdado
     toString(): string {
-        return `${super.toString()} Poisonous: ${this.poisonous}`
+        return `${super.toString()} Poisonous: ${this.poisonous ? 'Yes' : 'No'}`
     }
     // herdamos move(), mas não o queremos
     // vamos anular o método move()
