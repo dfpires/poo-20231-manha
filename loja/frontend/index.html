@@ -34,6 +34,7 @@
     </nav>
     <div class="container"> 
         <form>
+            <input hidden id="id"/>
             <div class="mb-3 mt-5 w-50">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" id="name"/>
@@ -46,8 +47,8 @@
                 <label for="quantity" class="form-label">Quantidade</label>
                 <input type="number" class="form-control" id="quantity"/>
             </div>
-            <button onClick="cadastra()" type="button" class="btn btn-primary">
-                Cadastrar
+            <button onClick="confirmar()" type="button" class="btn btn-primary">
+                Confirmar
             </button>
         </form>
         <table class="table">
