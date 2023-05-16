@@ -135,4 +135,30 @@ export async function AppRoutes(app: FastifyInstance) {
         })
         return productDeleted
     })
+
+    // rota para atualizar 3 campos
+    app.put('/product', async (request) => {
+            // cria objeto zod
+            const putBody = z.object({
+                id: z.string().uuid(),
+                name: z.string(),
+                description: z.string(),
+                quantity: z.number()
+            })
+            // recupera os dados do frontend
+            const {id, name, description, quantity} = putBody.parse(request.body)
+            // atualiza no banco de dados
+            const productUpdated = await prisma.product.update({
+                where: {
+                    id: id
+                },
+                data: {
+                    name,
+                    description,
+                    quantity
+                }
+            })
+            return productUpdated
+    })
 }
+
