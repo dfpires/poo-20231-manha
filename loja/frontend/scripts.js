@@ -30,7 +30,7 @@ async function consulta(){
         })
     let conteudo = ""
     produtos.forEach(produto => {
-        conteudo += `<tr> <td> ${produto.name} </td> <td> ${produto.description} </td> <td> ${produto.quantity} </td> <td> ${produto.created_at}</td> <td> <i onClick="remover('${produto.id}')" class="bi bi-trash"> </td> <td> <i onClick="editar('${produto.id}', '${produto.name}', '${produto.description}', ${produto.quantity})" class="bi bi-pencil"/> </td> </tr>`
+        conteudo += `<tr> <td> ${produto.name} </td> <td> ${produto.description} </td> <td> ${produto.quantity} </td> <td> ${produto.created_at}</td> <td> <i onClick="remover('${produto.id}')" class="bi bi-trash"> </td> <td> <i onClick="editar('${produto.id}', '${produto.name}', '${produto.description}', ${produto.quantity})" class="bi bi-pencil"/> </td></tr>`
     })
     // envia os dados para o HTML
     document.getElementById("tabela").innerHTML = conteudo
