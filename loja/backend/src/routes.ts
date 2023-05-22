@@ -115,7 +115,10 @@ export async function AppRoutes(app: FastifyInstance) {
             return response
         }
         else {
-            return 'Venda não realizada, estoque insuficiente'
+            let response = {
+                status: 'Venda não realizada, estoque insuficiente'
+            }
+            return response
         }
     })
 
