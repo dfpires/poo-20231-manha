@@ -18,6 +18,19 @@ export async function AppRoutes(app: FastifyInstance) {
         const products = await prisma.product.findMany()
         return products
     })
+
+    app.get('/productById/:id', async (request) => {
+        const idParam = z.object({
+            id: z.string().uuid()
+        })
+        const {id} = idParam.parse(request.params)
+        const product = await prisma.product.findUnique({
+            where: {
+                id
+            }
+        })
+        return product
+    })
     // define uma rota que consulta os produtos no banco de dados que iniciam com o nome X
     app.get('/productByName/:name', async (request) => {
         // recupera o name informado pelo frontend
@@ -101,6 +114,7 @@ export async function AppRoutes(app: FastifyInstance) {
                 }
             }
         })
+
     //  return resp.count
         if ((resp.count) > 0){
             let productUpdated = await prisma.product.findUnique({
@@ -109,14 +123,14 @@ export async function AppRoutes(app: FastifyInstance) {
                 }
             })
             let response = {
-                status: 'Venda com sucesso',
+                estado: 'Venda com sucesso',
                 product: productUpdated
             }
             return response
         }
         else {
             let response = {
-                status: 'Venda não realizada, estoque insuficiente'
+                estado: 'Venda não realizada, estoque insuficiente'
             }
             return response
         }
