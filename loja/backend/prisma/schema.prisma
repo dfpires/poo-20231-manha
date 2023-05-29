@@ -16,5 +16,16 @@ model Product {
   description      String
   quantity         Int              
   created_at       DateTime
+  userId           String
+  user             User @relation(fields: [userId], references: [id])
   @@map("products")
+}
+
+model User {
+  id String @id @default(uuid())
+  username String
+  password String
+  email String @unique
+  products Product[]
+  @@map("users")
 }

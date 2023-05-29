@@ -8,14 +8,50 @@ import { FastifyInstance } from 'fastify'
 
 export async function AppRoutes(app: FastifyInstance) {
     
-    // definir uma rota chamada hello - verbo é GET, uma consulta
-    app.get('/hello', () => {
-        return 'Hello World'
+    // define rota para criar usuário
+    app.post('/user', async (request) => {
+        console.log('1')
+        const userPost = z.object({
+            username: z.string(),
+            password: z.string(),
+            email: z.string().email()
+        })
+        console.log('2')
+        const {username, password, email} = userPost.parse(request.body)
+        console.log('3')
+        const newUser = await prisma.user.create({
+            data: {
+                username,
+                password,
+                email
+            }
+        })
+        console.log('4')
+        return newUser
+    })
+
+    // define uma rota que consulta todos os usuários cadastrados no banco de dados
+    app.get('/users', async () => {
+        const users = await prisma.user.findMany()
+        return users
     })
 
     // define uma rota que consulta todos os produtos cadastrados no banco de dados
     app.get('/products', async () => {
         const products = await prisma.product.findMany()
+        return products
+    })
+
+    app.get('/products/:userId', async (request) => {
+        const userIdParams = z.object({
+            userId: z.string().uuid()
+        })
+        const {userId} = userIdParams.parse(request.params)
+        const products = await prisma.product.findMany({
+            where: {
+                userId: userId
+            }
+        })
         return products
     })
 
@@ -55,9 +91,10 @@ export async function AppRoutes(app: FastifyInstance) {
         const createProductBody = z.object({
             name: z.string(),
             description: z.string(),
-            quantity: z.number()
+            quantity: z.number(),
+            userId: z.string().uuid()
         })
-        const {name, description, quantity} = createProductBody.parse(request.body)
+        const {name, description, quantity, userId} = createProductBody.parse(request.body)
         // insere o produto no banco de dados
         // recupera a data atual - de hoje
         const today = dayjs().startOf('day').toDate() // sem hora, minuto e segundo
@@ -66,7 +103,8 @@ export async function AppRoutes(app: FastifyInstance) {
                 name,
                 description,
                 quantity,
-                created_at: today
+                created_at: today,
+                userId
             }
         })
         return newProduct
