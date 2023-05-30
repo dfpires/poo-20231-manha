@@ -16,9 +16,7 @@ export async function AppRoutes(app: FastifyInstance) {
             password: z.string(),
             email: z.string().email()
         })
-        console.log('2')
         const {username, password, email} = userPost.parse(request.body)
-        console.log('3')
         const newUser = await prisma.user.create({
             data: {
                 username,
@@ -36,6 +34,21 @@ export async function AppRoutes(app: FastifyInstance) {
         return users
     })
 
+    // verifica se usuário e senha estão OK
+    app.post('/user/verifica', async (request) => {
+        const verificaBody = z.object({
+            username: z.string(),
+            password: z.string()
+        })
+        const {username, password} = verificaBody.parse(request.body)
+        const result = await prisma.user.findFirst({
+            where: {
+                username,
+                password
+            }
+        })
+        return result // retorna null se username e/ou password errados
+    })
     // define uma rota que consulta todos os produtos cadastrados no banco de dados
     app.get('/products', async () => {
         const products = await prisma.product.findMany()
