@@ -24,7 +24,12 @@ function editar(id, name, description, quantity){
 }
 
 async function consulta(){
-    let produtos = await fetch('http://localhost:3333/products')
+    // precisamos inicialmente recuperar o valor do cookie
+    // o valor recuperado será, por exemplo, id=yuuryewh
+    // o split vai dividir o conteúdo em um vetor
+    // aux[0] = id  e aux[1] = yuuryewh
+    let aux = document.cookie.split('=')
+    let produtos = await fetch(`http://localhost:3333/products/${aux[1]}`)
         .then(resposta => {
             return resposta.json()
         })
@@ -50,7 +55,9 @@ async function confirmar(){
     let produto
     if (!id){
         method = 'POST'
-        produto = {name, description, quantity}
+        let aux = document.cookie.split('=')
+        let userId = aux[1]
+        produto = {name, description, quantity, userId }
     }
     else {
         method = 'PUT'
@@ -73,3 +80,5 @@ async function confirmar(){
     document.getElementById("description").value = ''
     document.getElementById("quantity").value = ''
 }
+
+
