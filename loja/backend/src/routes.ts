@@ -228,5 +228,7 @@ export async function AppRoutes(app: FastifyInstance) {
             })
             return productUpdated
     })
+
+    
 }
 
